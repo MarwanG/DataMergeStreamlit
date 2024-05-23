@@ -80,8 +80,6 @@ with st.expander("Joins"):
             final_db=st.session_state['dataframes'][dataset_1].merge(st.session_state['dataframes'][dataset_2],left_on=column_1,right_on=column_2)
             print("Je suis ici")
             st.session_state["final_db"] = final_db
-            pr = st.session_state["final_db"].profile_report()
-            st_profile_report(pr)
             st.write(st.session_state["final_db"])
             
             st.rerun()
