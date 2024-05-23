@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import requests
-from streamlit_pandas_profiling import st_profile_report
 
 if "links" not in st.session_state:
     st.session_state["links"] = ["https://apicarto.ign.fr/api/gpu/municipality?insee=75114","https://apicarto.ign.fr/api/cadastre/commune?code_insee=75114",
