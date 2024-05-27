@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import requests
-from streamlit_folium import st_folium
-import folium
+# from streamlit_folium import st_folium
+# import folium
 
 def delete_link(l):
     print(f"Just got called {l}")
@@ -19,13 +19,13 @@ if "links" not in st.session_state:
 if "dataframes" not in st.session_state:
     st.session_state["dataframes"] = []
 
-with st.sidebar:
-    m = folium.Map(location=[48.84648807785674,2.4227106571197514], zoom_start=16)
-    st_data = st_folium(m, width=725,height=200)
-    try:
-        st.write(st_data["center"])
-    except:
-        print("Cant find location")
+# with st.sidebar:
+#     m = folium.Map(location=[48.84648807785674,2.4227106571197514], zoom_start=16)
+#     st_data = st_folium(m, width=725,height=200)
+#     try:
+#         st.write(st_data["center"])
+#     except:
+#         print("Cant find location")
 with st.expander("Links"):
     link1 = st.text_input("Link")
     button = st.button("Add Link")
