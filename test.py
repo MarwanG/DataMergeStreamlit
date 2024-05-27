@@ -1,6 +1,16 @@
 import streamlit as st
 import pandas as pd
 import requests
+from streamlit_folium import st_folium
+import folium
+
+def delete_link(l):
+    print(f"Just got called {l}")
+    links = st.session_state["links"]
+    print(links)
+    links.remove(l)
+    st.session_state["links"] = links
+
 
 if "links" not in st.session_state:
     st.session_state["links"] = ["https://apicarto.ign.fr/api/gpu/municipality?insee=75114","https://apicarto.ign.fr/api/cadastre/commune?code_insee=75114",
@@ -9,7 +19,13 @@ if "links" not in st.session_state:
 if "dataframes" not in st.session_state:
     st.session_state["dataframes"] = []
 
-
+with st.sidebar:
+    m = folium.Map(location=[48.84648807785674,2.4227106571197514], zoom_start=16)
+    st_data = st_folium(m, width=725,height=200)
+    try:
+        st.write(st_data["center"])
+    except:
+        print("Cant find location")
 with st.expander("Links"):
     link1 = st.text_input("Link")
     button = st.button("Add Link")
@@ -17,7 +33,11 @@ with st.expander("Links"):
         st.write("Loaded")
         st.session_state["links"]  = st.session_state["links"]  + [link1]
 
-    st.write(st.session_state["links"])
+    col1,col2 = st.columns([3,1])
+    for l in st.session_state["links"]:
+        col1.write(l)
+        col2.button("delete",on_click=delete_link,args=[l],key=f"{l}_delete")
+    # st.write()
     load = st.button("Load data")
 
 
@@ -29,13 +49,14 @@ if load:
 
                 st.subheader(f"Link {i}")
                 st.write(url)
-
-                urlData = requests.get(url)
-                elevations = urlData.json()
-                df = pd.json_normalize(elevations['features'])
-                st.write(df)
-                dataframes.append(df)
-
+                try:
+                    urlData = requests.get(url)
+                    elevations = urlData.json()
+                    df = pd.json_normalize(elevations['features'])
+                    st.write(df)
+                    dataframes.append(df)
+                except: 
+                    st.warning(f"{url} might not be supported yet")
             st.session_state['dataframes'] = dataframes
 else:
     with st.expander("Databases"):
@@ -60,6 +81,7 @@ else:
 if "final_db" in st.session_state:
     st.subheader("Current Final Table")
     st.write(st.session_state["final_db"])
+
 
 with st.expander("Joins"):
     if len(st.session_state['dataframes']) > 0:
