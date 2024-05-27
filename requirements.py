@@ -3,5 +3,5 @@ pandas==2.1.3
 requests==2.31.0
 streamlit-pandas-profiling
 pandas-profiling
-streamlit_folium
+streamlit-folium
 folium
