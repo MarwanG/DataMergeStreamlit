@@ -13,7 +13,7 @@ if "dataframes" not in st.session_state:
 with st.expander("Links"):
     link1 = st.text_input("Link")
     button = st.button("Add Link")
-    if button:
+    if button and len(link1) > 0:
         st.write("Loaded")
         st.session_state["links"]  = st.session_state["links"]  + [link1]
 
